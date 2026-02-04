@@ -1,0 +1,404 @@
+/* --- 1. DESIGN TOKENS --- */
+:root {
+    /* Brand Color */
+    --primary: #4f46e5; 
+    --primary-glow: rgba(79, 70, 229, 0.4);
+    
+    /* Light Mode */
+    --bg-body: #f3f4f6;
+    --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), 
+                   radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
+    
+    --glass-panel: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+    
+    --text-main: #111827;
+    --text-sec: #6b7280;
+    
+    --input-bg: rgba(255, 255, 255, 0.6);
+    --item-hover: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark Mode Configuration */
+body.dark-mode {
+    --bg-body: #0f172a;
+    --bg-gradient: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%), 
+                   radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+    
+    --glass-panel: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
+    
+    --text-main: #f8fafc;
+    --text-sec: #94a3b8;
+    
+    --input-bg: rgba(15, 23, 42, 0.5);
+    --item-hover: rgba(51, 65, 85, 0.6);
+}
+
+/* --- 2. GLOBAL RESET --- */
+* { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-body);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- 3. HEADER & CONTROLS --- */
+.header {
+    width: 100%; max-width: 1200px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--glass-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    box-shadow: var(--glass-shadow);
+}
+.header h2 { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.025em; }
+
+.controls { display: flex; align-items: center; gap: 1.5rem; }
+
+/* Color Picker */
+.color-wrapper { position: relative; display: flex; align-items: center; }
+input[type="color"] {
+    border: none; width: 32px; height: 32px; cursor: pointer; background: none;
+    padding: 0; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 0 0 2px var(--glass-border);
+}
+
+/* Switch Toggle */
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 34px;
+}
+.slider:before {
+    position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+    background-color: white; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+input:checked + .slider { background-color: var(--primary); }
+input:checked + .slider:before { transform: translateX(20px); }
+body.dark-mode .slider { background-color: #475569; }
+
+/* --- 4. DASHBOARD GRID --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 2rem;
+    width: 100%; max-width: 1200px;
+    align-items: start;
+}
+
+.glass-card {
+    background: var(--glass-panel);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: var(--glass-shadow);
+}
+
+.stats-column { display: flex; flex-direction: column; gap: 2rem; }
+
+h3 {
+    font-size: 0.85rem; font-weight: 600; 
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-sec); margin-bottom: 1.5rem;
+}
+
+.chart-box { position: relative; height: 200px; width: 100%; }
+
+/* --- 5. TASKS --- */
+.task-column { min-height: 600px; display: flex; flex-direction: column; }
+
+.input-group { position: relative; display: flex; gap: 1rem; margin-bottom: 2rem; }
+
+input[type="text"] {
+    flex-grow: 1; 
+    padding: 1rem 1.25rem; 
+    font-size: 1rem;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    border-radius: 1rem; 
+    outline: none;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+input[type="text"]:focus {
+    background: var(--glass-panel);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+input[type="text"]::placeholder { color: var(--text-sec); opacity: 0.7; }
+
+.add-btn {
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    padding: 0 2rem;
+    border-radius: 1rem; 
+    cursor: pointer; 
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px var(--primary-glow);
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+.add-btn:hover { box-shadow: 0 6px 16px var(--primary-glow); transform: translateY(-1px); }
+.add-btn:active { transform: scale(0.97); }
+
+ul { list-style: none; overflow-y: auto; flex-grow: 1; padding-right: 8px; max-height: 500px; }
+ul::-webkit-scrollbar { width: 6px; }
+ul::-webkit-scrollbar-track { background: transparent; }
+ul::-webkit-scrollbar-thumb { background-color: var(--text-sec); opacity: 0.2; border-radius: 20px; border: 2px solid transparent; background-clip: content-box; }
+
+li {
+    background: transparent;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1.25rem 0.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.2s;
+    border-radius: 0.5rem;
+}
+li:hover { background: var(--item-hover); padding-left: 1rem; padding-right: 1rem; border-color: transparent; }
+
+.task-content { display: flex; align-items: center; gap: 1rem; cursor: pointer; width: 100%; }
+
+.check-circle {
+    min-width: 24px; height: 24px; 
+    border: 2px solid #cbd5e1; 
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+}
+.dark-mode .check-circle { border-color: #475569; }
+.check-circle::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; display: none; }
+
+.completed .check-circle { background: var(--primary); border-color: var(--primary); }
+.completed .check-circle::after { display: block; }
+.completed .task-text { text-decoration: line-through; color: var(--text-sec); opacity: 0.6; }
+
+.task-text { font-size: 1rem; font-weight: 500; }
+
+.delete-btn { 
+    background: rgba(239, 68, 68, 0.1); 
+    border: none; 
+    color: #ef4444; 
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: all 0.2s;
+}
+li:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { background: #ef4444; color: white; }
+
+/* --- 6. CALENDAR WIDGET --- */
+.calendar-widget {
+    padding: 1.5rem;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-main);
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-sec);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    background: var(--item-hover);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.calendar-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin-bottom: 0.5rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    border-radius: 8px;
+    position: relative;
+    cursor: default;
+    transition: background 0.2s;
+}
+
+.calendar-day:hover {
+    background: var(--item-hover);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    pointer-events: none;
+}
+
+.calendar-day.today {
+    background: var(--primary-glow);
+    color: var(--primary);
+    font-weight: 700;
+    border: 1px solid var(--primary);
+}
+
+/* Dots for tasks */
+.calendar-day .dot-container {
+    display: flex;
+    gap: 2px;
+    margin-top: 2px;
+    height: 4px;
+}
+
+.calendar-day .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--text-sec);
+    opacity: 0.5;
+}
+
+.calendar-day .dot.completed {
+    background-color: var(--primary);
+    opacity: 1;
+}
+
+/* --- 7. RESPONSIVE & MOBILE OPTIMIZATION --- */
+
+/* Tablet & Smaller Laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stack columns vertically */
+        max-width: 700px; /* Center the single column content */
+        margin: 0 auto;
+    }
+
+    .stats-column {
+        flex-direction: row; /* Put charts side-by-side if space permits */
+        flex-wrap: wrap;
+    }
+
+    .glass-card {
+        flex: 1 1 300px; /* Cards can grow but stay at least 300px wide */
+    }
+
+    .task-column {
+        min-height: auto; 
+    }
+    
+    ul {
+        max-height: 500px; /* Keep task list scrollable */
+    }
+}
+
+/* Mobile Devices (max-width: 600px) */
+@media (max-width: 600px) {
+    /* Reduce body padding for more screen space */
+    body {
+        padding: 1rem 0.5rem; 
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .header .controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .dashboard-grid {
+        gap: 1.5rem;
+    }
+
+    /* Reduce card padding on mobile */
+    .glass-card {
+        padding: 1.25rem;
+        border-radius: 1rem;
+    }
+
+    /* Force stats column to stack vertically again on very small screens */
+    .stats-column {
+        flex-direction: column;
+    }
+
+    /* Make Calendar text smaller to fit tight screens */
+    .calendar-days-header span,
+    .calendar-day {
+        font-size: 0.75rem;
+    }
+    
+    .calendar-day {
+        height: 40px; /* Fix height for consistent touch targets */
+    }
+
+    /* Increase touch targets for inputs and buttons */
+    input[type="text"], 
+    .add-btn {
+        padding: 0.8rem 1rem;
+        font-size: 16px; /* Prevents auto-zoom on iOS */
+    }
+
+    .add-btn {
+        width: 100%; /* Full width button on mobile */
+    }
+    
+    .input-group {
+        flex-direction: column; /* Stack input and add button */
+        gap: 0.75rem;
+    }
+    
+    /* Adjust Charts height for mobile */
+    .chart-box {
+        height: 180px;
+    }
+}

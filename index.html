@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Enterprise Task Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="header">
+        <h2>Dashboard</h2>
+        <div class="controls">
+            <div class="color-wrapper" title="Theme Color">
+                <input type="color" id="themeColor" value="#4f46e5">
+            </div>
+            <label class="switch" title="Dark Mode">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        
+        <div class="stats-column">
+            
+            <div class="glass-card">
+                <h3>Weekly Velocity</h3>
+                <div class="chart-box">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h3>Completion Rate</h3>
+                <div class="chart-box" style="display: flex; justify-content: center;">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card calendar-widget">
+                <div class="calendar-header">
+                    <button id="prevMonth" class="nav-btn">&lt;</button>
+                    <h3 id="monthYearDisplay">Month Year</h3>
+                    <button id="nextMonth" class="nav-btn">&gt;</button>
+                </div>
+                
+                <div class="calendar-days-header">
+                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                </div>
+                
+                <div class="calendar-grid" id="calendarGrid">
+                    </div>
+            </div>
+
+        </div>
+
+        <div class="glass-card task-column">
+            <h3>Active Tasks</h3>
+            <div class="input-group">
+                <input type="text" id="taskInput" placeholder="What needs to be done?">
+                <button class="add-btn" onclick="addTask()">Add</button>
+            </div>
+            <ul id="taskList"></ul>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
